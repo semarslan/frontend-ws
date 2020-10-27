@@ -65,6 +65,7 @@ export function withApiProgress(WrappedComponent, apiPath){
             //     </div>
             // )
 
+
             return <WrappedComponent pendingApiCall={pendingApiCall} {...this.props}/>
         }
     }
