@@ -11,6 +11,7 @@ const UserList = () => {
             number: 0
     });
 
+
     useEffect(() =>{
         loadUsers();
     }, [])
