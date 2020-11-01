@@ -23,7 +23,7 @@ const LoginPage = props => {
         const creds = {
             username,
             password
-        }
+        };
         const {history} = props;
         const {push} = history;
 

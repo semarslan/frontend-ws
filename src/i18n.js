@@ -16,7 +16,9 @@ i18n.use(initReactI18next).init({
                 'Password Repeat': 'Password Repeat',
                 Login: 'Login',
                 Logout: "Logout",
-                Users: "Users"
+                Users: "Users",
+                Next: "Next >",
+                Previous: "< Previous"
             }
         },
         tr: {
@@ -32,7 +34,9 @@ i18n.use(initReactI18next).init({
                 'Password Repeat': 'Parolayı tekrarla',
                 Login: 'Giriş Yap',
                 Logout: 'Çıkış Yap',
-                Users: "Kullanıcılar"
+                Users: "Kullanıcılar",
+                Next: "Sonraki >",
+                Previous: "< Önceki"
             }
         }
     },
