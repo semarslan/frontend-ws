@@ -1,14 +1,20 @@
-import axios from "axios";
+import axios from 'axios';
 
-export const signup = (body) => {
+export const signup = body => {
     return axios.post('/api/1.0/users', body);
 };
 
 export const login = creds => {
-    return axios.post('/api/1.0/auth', {}, {auth : creds});
+    return axios.post('/api/1.0/auth', {}, {auth: creds} );
+};
+export const logout = () => {
+    return axios.post('/api/1.0/logout');
 }
-
 
 export const changeLanguage = language => {
     axios.defaults.headers['accept-language'] = language;
+};
+
+export const getUsers = () => {
+    return axios.get('/api/1.0/users');
 }

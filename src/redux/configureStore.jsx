@@ -1,6 +1,7 @@
 import {createStore} from 'redux';
 import authReducer from "./authReducer";
 
+/*
 const loggedInState = {
     isLoggedIn: true,
     username: "user1",
@@ -8,6 +9,7 @@ const loggedInState = {
     image: null,
     password: "P4ssword"
 };
+*/
 
 const configureStore = () => {
 

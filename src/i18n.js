@@ -15,7 +15,8 @@ i18n.use(initReactI18next).init({
                 Password: 'Password',
                 'Password Repeat': 'Password Repeat',
                 Login: 'Login',
-                Logout: "Logout"
+                Logout: "Logout",
+                Users: "Users"
             }
         },
         tr: {
@@ -30,11 +31,12 @@ i18n.use(initReactI18next).init({
                 Password: 'Parola',
                 'Password Repeat': 'Parolayı tekrarla',
                 Login: 'Giriş Yap',
-                Logout: 'Çıkış Yap'
+                Logout: 'Çıkış Yap',
+                Users: "Kullanıcılar"
             }
         }
     },
-    fallbackLng: 'tr',
+    fallbackLng: 'en',
     ns: ['translations'],
     defaultNS: 'translations',
     keySeparator: false,
