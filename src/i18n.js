@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import React from "react";
 
 i18n.use(initReactI18next).init({
     resources: {
@@ -18,7 +19,8 @@ i18n.use(initReactI18next).init({
                 Logout: "Logout",
                 Users: "Users",
                 Next: "Next >",
-                Previous: "< Previous"
+                Previous: "< Previous",
+                'Load Failure': "Load Failure"
             }
         },
         tr: {
@@ -36,7 +38,8 @@ i18n.use(initReactI18next).init({
                 Logout: 'Çıkış Yap',
                 Users: "Kullanıcılar",
                 Next: "Sonraki >",
-                Previous: "< Önceki"
+                Previous: "< Önceki",
+                'Load Failure' : "Liste Alınamadı"
             }
         }
     },
