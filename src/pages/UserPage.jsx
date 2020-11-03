@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import ProfileCard from "../components/ProfileCard";
-import {getUser} from "../api/apiCalls";
+import {getUser} from '../api/apiCalls';
 
 const UserPage = (props) => {
+
     const [user, setUser] = useState();
 
     useEffect(() => {
