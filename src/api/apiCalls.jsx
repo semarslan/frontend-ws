@@ -28,3 +28,7 @@ export const setAuthorizationHeader = ({username, password, isLoggedIn}) => {
     }
 
 }
+
+export const getUser = username => {
+    return axios.get(`/api/1.0/users/${username}`);
+}
