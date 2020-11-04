@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import ProfilePicture from "./ProfilePicture";
+import {useTranslation} from "react-i18next";
+import Input from "./Input";
 
 const ProfileCard = props => {
+    const [inEditMode, setInEditMode] = useState(false);
     const {username: loggedInUsername} = useSelector((store) => ({username: store.username}));
     const routeParams = useParams();
 
@@ -12,10 +15,8 @@ const ProfileCard = props => {
 
     const pathUsername = routeParams.username;
 
-/*    let message = "We cannot edit";
-    if (pathUsername === loggedInUsername) {
-        message = "We can edit"
-    }*/
+    const {t} = useTranslation();
+
     return (
         <div className="card text-center">
             <div className="card-header">
@@ -27,9 +28,32 @@ const ProfileCard = props => {
                 />
             </div>
             <div className="card-body ">
-                <h3>
-                    {displayName}@{username}
-                </h3>
+                {!inEditMode && (
+                    <>
+                        <h3>
+                            {displayName}@{username}
+                        </h3>
+                        <button className="btn btn-success d-inline-flex" onClick={() => setInEditMode(true)}>
+                            <span className="material-icons">edit</span>
+                            {t('Edit')}
+                        </button>
+                    </>
+                )}
+                {inEditMode && (
+                    <div>
+                        <Input label={t("Change Display Name")} />
+                        <div>
+                            <button className="btn btn-outline-info d-inline-flex m-2">
+                                <span className="material-icons">save</span>
+                                {t("Save")}
+                            </button>
+                            <button className="btn btn-light d-inline-flex m-2" onClick={() => setInEditMode(false)}>
+                                <span className="material-icons">close</span>
+                                {t("Cancel")}
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
