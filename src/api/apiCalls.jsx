@@ -19,6 +19,11 @@ export const getUsers = (page = 0, size = 3) => {
     return axios.get(`/api/1.0/users?page=${page}&size=${size}`);
 }
 
+/*
+Login olan kullanıcıyı listeden kaldırmak.
+Else ise logot olup sayfaya girildiğinde tekrar o kullancıyı listeye eklemek
+*/
+
 export const setAuthorizationHeader = ({username, password, isLoggedIn}) => {
     if (isLoggedIn) {
         const authorizationHeaderValue = `Basic ${btoa(username + ':' + password)}`
@@ -26,12 +31,7 @@ export const setAuthorizationHeader = ({username, password, isLoggedIn}) => {
     } else {
         delete axios.defaults.headers['Authorization'];
     }
-
 };
-
-export const getUser = username => {
-    return axios.get(`/api/1.0/users/${username}`)
-}
 
 export const getUser = username => {
     return axios.get(`/api/1.0/users/${username}`);

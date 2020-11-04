@@ -18,12 +18,7 @@ const UserList = () => {
 
     useEffect(() => {
         loadUsers();
-    }, [])
-
-    /* const componentDidMount()
-     {
-         this.loadUsers();
-     }*/
+    }, []);
 
     const onClickNext = () => {
         const nextPage = page.number + 1;
