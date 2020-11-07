@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import ProfilePicture from "./ProfilePicture";
@@ -7,15 +7,28 @@ import Input from "./Input";
 
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
+    const [updatedDisplayName, setUpdatedDisplayName] = useState();
     const {username: loggedInUsername} = useSelector((store) => ({username: store.username}));
     const routeParams = useParams();
 
     const {user} = props;
     const {username, displayName, image} = user;
 
-    const pathUsername = routeParams.username;
 
     const {t} = useTranslation();
+
+    useEffect(() => {
+        if(!inEditMode) {
+            setUpdatedDisplayName(undefined);
+        }else {
+            setUpdatedDisplayName(displayName)
+        }
+    }, [inEditMode, displayName]);
+
+    const onClickSave = () => {
+        console.log(updatedDisplayName)
+    }
+    const pathUsername = routeParams.username;
 
     return (
         <div className="card text-center">
@@ -41,9 +54,16 @@ const ProfileCard = props => {
                 )}
                 {inEditMode && (
                     <div>
-                        <Input label={t("Change Display Name")} />
+                        <Input label={t("Change Display Name")}
+                               defaultValue={displayName}
+                               onChange={(event) => {
+                                   setUpdatedDisplayName(event.target.value)
+                               }}
+                        />
                         <div>
-                            <button className="btn btn-outline-info d-inline-flex m-2">
+                            <button className="btn btn-outline-info d-inline-flex m-2"
+                                    onClick={onClickSave}
+                            >
                                 <span className="material-icons">save</span>
                                 {t("Save")}
                             </button>
