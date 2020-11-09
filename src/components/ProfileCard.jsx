@@ -13,7 +13,7 @@ const ProfileCard = props => {
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
     const {username: loggedInUsername} = useSelector((store) => ({username: store.username}));
     const routeParams = useParams();
-    const {user, setUser} = useState({});
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         setUser(props.user)
