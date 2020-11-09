@@ -46,10 +46,8 @@ const ProfileCard = props => {
     const pendingApiCall = useApiProgress('put', '/api/1.0/users' + username);
 
     const pathUsername = routeParams.username;
-    let message = 'We cannot edit';
-    if (pathUsername === loggedInUsername) {
-        message = 'We can edit';
-    }
+
+    const editable = pathUsername === loggedInUsername
 
     return (
         <div className="card text-center">
@@ -67,10 +65,12 @@ const ProfileCard = props => {
                         <h3>
                             {displayName}@{username}
                         </h3>
-                        <button className="btn btn-success d-inline-flex" onClick={() => setInEditMode(true)}>
-                            <span className="material-icons">edit</span>
-                            {t('Edit')}
-                        </button>
+                        {editable && (
+                            <button className="btn btn-success d-inline-flex" onClick={() => setInEditMode(true)}>
+                                <span className="material-icons">edit</span>
+                                {t('Edit')}
+                            </button>
+                        )}
                     </>
                 )}
                 {inEditMode && (
