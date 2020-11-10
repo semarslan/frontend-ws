@@ -3,7 +3,7 @@ import defaultPicture from "../assets/profile.png";
 
 const ProfilePicture = props => {
 
-    const {image, tempImage} = props;
+    const {image} = props;
 
     let imageSource = defaultPicture;
     if (image) {
@@ -11,7 +11,7 @@ const ProfilePicture = props => {
     }
     return (
         <img
-            src={tempImage || imageSource} alt={`Profile`} {...props} />
+            src={imageSource} alt={`Profile`} {...props} />
     );
 };
 export default ProfilePicture;

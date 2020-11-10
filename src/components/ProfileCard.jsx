@@ -40,7 +40,8 @@ const ProfileCard = props => {
 
     const onClickSave = async () => {
         const body = {
-            displayName: updatedDisplayName
+            displayName: updatedDisplayName,
+            image: newImage
         };
         try {
             const response = await updateUser(username, body);
@@ -66,10 +67,9 @@ const ProfileCard = props => {
             <div className="card-header">
                 <ProfilePicture
                     className="rounded-circle shadow"
-                    image={image}
+                    image={newImage || image}
                     height={200} width={200}
                     alt={`${username} profile`}
-                    tempImage={newImage}
                 />
             </div>
             <div className="card-body ">
