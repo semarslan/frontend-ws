@@ -15,6 +15,7 @@ const ProfileCard = props => {
     const routeParams = useParams();
     const pathUsername = routeParams.username;
     const [user, setUser] = useState({});
+    const [newImage, setNewImage] = useState();
 
     const [editable, setEditable] = useState(false);
     useEffect(() => {
@@ -31,6 +32,7 @@ const ProfileCard = props => {
     useEffect(() => {
         if (!inEditMode) {
             setUpdatedDisplayName(undefined);
+            setNewImage(undefined);
         } else {
             setUpdatedDisplayName(displayName)
         }
@@ -49,6 +51,14 @@ const ProfileCard = props => {
         }
     }
 
+    const onChangeFile = (event) => {
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setNewImage(fileReader.result);
+        }
+        fileReader.readAsDataURL(file);
+    }
     const pendingApiCall = useApiProgress('put', '/api/1.0/users' + username);
 
     return (
@@ -59,6 +69,7 @@ const ProfileCard = props => {
                     image={image}
                     height={200} width={200}
                     alt={`${username} profile`}
+                    tempImage={newImage}
                 />
             </div>
             <div className="card-body ">
@@ -83,6 +94,7 @@ const ProfileCard = props => {
                                    setUpdatedDisplayName(event.target.value)
                                }}
                         />
+                        <input type="file" onChange={onChangeFile}/>
                         <div>
                             <ButtonWithProgress
                                 className="btn btn-outline-info d-inline-flex m-2"
