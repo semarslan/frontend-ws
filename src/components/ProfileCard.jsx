@@ -67,7 +67,8 @@ const ProfileCard = props => {
             <div className="card-header">
                 <ProfilePicture
                     className="rounded-circle shadow"
-                    image={newImage || image}
+                    image={image}
+                    tempimage={newImage}
                     height={200} width={200}
                     alt={`${username} profile`}
                 />
