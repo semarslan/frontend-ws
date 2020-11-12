@@ -16,6 +16,7 @@ const ProfileCard = props => {
     const pathUsername = routeParams.username;
     const [user, setUser] = useState({});
     const [newImage, setNewImage] = useState();
+    const [errors, setErrors] = useState({});
 
     const [editable, setEditable] = useState(false);
     useEffect(() => {
@@ -27,6 +28,7 @@ const ProfileCard = props => {
     }, [pathUsername, loggedInUsername])
 
     const {username, displayName, image} = user;
+    const {displayName: displayNameError} = errors;
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -38,9 +40,15 @@ const ProfileCard = props => {
         }
     }, [inEditMode, displayName]);
 
+    useEffect(() => {
+        setErrors(previousValidationErrors => ({
+            ...previousValidationErrors,
+            displayName: undefined
+        }));
+    }, [updatedDisplayName])
     const onClickSave = async () => {
         let image;
-        if(newImage) {
+        if (newImage) {
             image = newImage.split(',')[1];
         }
         const body = {
@@ -52,13 +60,15 @@ const ProfileCard = props => {
             setInEditMode(false);
             setUser(response.data);
         } catch (error) {
-
+            if (error.response.data.validationErrors) {
+                setErrors(error.response.data.validationErrors);
+            }
         }
     }
 
     const onChangeFile = (event) => {
-        if(event.target.files.length < 1 ) {
-            return ;
+        if (event.target.files.length < 1) {
+            return;
         }
         const file = event.target.files[0];
         const fileReader = new FileReader();
@@ -98,6 +108,7 @@ const ProfileCard = props => {
                     <div>
                         <Input label={t("Change Display Name")}
                                defaultValue={displayName}
+                               error={t(displayNameError)}
                                onChange={(event) => {
                                    setUpdatedDisplayName(event.target.value)
                                }}
