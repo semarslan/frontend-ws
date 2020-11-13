@@ -16,7 +16,7 @@ const ProfileCard = props => {
     const pathUsername = routeParams.username;
     const [user, setUser] = useState({});
     const [newImage, setNewImage] = useState();
-    const [errors, setErrors] = useState({});
+    const [validationErrors, setValidationErrors] = useState({});
 
     const [editable, setEditable] = useState(false);
     useEffect(() => {
@@ -28,8 +28,7 @@ const ProfileCard = props => {
     }, [pathUsername, loggedInUsername])
 
     const {username, displayName, image} = user;
-    const {displayName: displayNameError, image: imageError} = errors;
-    const {t} = useTranslation();
+
 
     useEffect(() => {
         if (!inEditMode) {
@@ -41,13 +40,13 @@ const ProfileCard = props => {
     }, [inEditMode, displayName]);
 
     useEffect(() => {
-        setErrors(previousValidationErrors => ({
+        setValidationErrors(previousValidationErrors => ({
             ...previousValidationErrors,
             displayName: undefined
         }));
     }, [updatedDisplayName])
     useEffect(() => {
-        setErrors(previousValidationErrors => ({
+        setValidationErrors(previousValidationErrors => ({
             ...previousValidationErrors,
             image: undefined
         }));
@@ -67,7 +66,7 @@ const ProfileCard = props => {
             setUser(response.data);
         } catch (error) {
             if (error.response.data.validationErrors) {
-                setErrors(error.response.data.validationErrors);
+                setValidationErrors(error.response.data.validationErrors);
             }
         }
     }
@@ -84,7 +83,8 @@ const ProfileCard = props => {
         fileReader.readAsDataURL(file);
     }
     const pendingApiCall = useApiProgress('put', '/api/1.0/users' + username);
-
+    const {displayName: displayNameError, image: imageError} = validationErrors;
+    const {t} = useTranslation();
     return (
         <div className="card text-center">
             <div className="card-header">

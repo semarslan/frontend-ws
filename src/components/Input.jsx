@@ -7,7 +7,7 @@ const Input = (props) => {
         className += '-file'
     }
 
-    if (error !== undefined) {
+    if (error ==! undefined) {
         className += ' is-invalid'
     }
     return (
