@@ -25,7 +25,7 @@ i18n.use(initReactI18next).init({
                 Edit: "Edit",
                 Save: "Save",
                 Cancel: "Cancel",
-                'Change Display Name' : "Change Display Name"
+                'Change Display Name' : "Change Display Name",
             }
         },
         tr: {
@@ -49,7 +49,7 @@ i18n.use(initReactI18next).init({
                 Edit : 'Düzenle',
                 Save: "Kaydet",
                 Cancel: "Vazgeç",
-                'Change Display Name' : "Tercih Edilen İsmi Değiştir"
+                'Change Display Name' : "Tercih Edilen İsmi Değiştir",
             }
         }
     },
