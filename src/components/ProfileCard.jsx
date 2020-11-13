@@ -28,7 +28,7 @@ const ProfileCard = props => {
     }, [pathUsername, loggedInUsername])
 
     const {username, displayName, image} = user;
-    const {displayName: displayNameError} = errors;
+    const {displayName: displayNameError, image: imageError} = errors;
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -46,6 +46,12 @@ const ProfileCard = props => {
             displayName: undefined
         }));
     }, [updatedDisplayName])
+    useEffect(() => {
+        setErrors(previousValidationErrors => ({
+            ...previousValidationErrors,
+            image: undefined
+        }));
+    }, [newImage])
     const onClickSave = async () => {
         let image;
         if (newImage) {
@@ -113,7 +119,7 @@ const ProfileCard = props => {
                                    setUpdatedDisplayName(event.target.value)
                                }}
                         />
-                        <input type="file" onChange={onChangeFile}/>
+                        <Input type="file" onChange={onChangeFile} error={imageError}/>
                         <div>
                             <ButtonWithProgress
                                 className="btn btn-outline-info d-inline-flex m-2"
