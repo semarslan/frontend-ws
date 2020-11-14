@@ -1,5 +1,5 @@
 import * as ACTIONS from './Constants'
-import {login, logout, signup} from "../api/apiCalls";
+import {login, signup} from "../api/apiCalls";
 
 export const logoutSuccess = () => {
     return {
@@ -11,6 +11,15 @@ export const loginSuccess = authState => {
     return {
         type: ACTIONS.LOGIN_SUCCESS,
         payload: authState
+    };
+};
+
+export const updateSuccess = ({displayName, image}) => {
+    return {
+        type: ACTIONS.UPDATE_SUCCESS,
+        payload: {
+            displayName, image
+        }
     };
 };
 

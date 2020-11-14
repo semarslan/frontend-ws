@@ -62,7 +62,7 @@ const TopBar = (props) => {
             <ul className="navbar-nav ml-auto" ref={menuArea}>
                 <li className="nav-item dropdown">
                     <div className="d-flex" style={{cursor: 'pointer'}} onClick={() => setMenuVisible(true)}>
-                        <ProfilePicture image={image} width={32} className="rounded-circle m-auto"/>
+                        <ProfilePicture image={image} width={32} height={32} className="rounded-circle m-auto"/>
                         <span className="nav-link dropdown-toggle">{displayName}</span>
                     </div>
                     <div className={dropDownClass}>
