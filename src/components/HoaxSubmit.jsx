@@ -22,7 +22,7 @@ const HoaxSubmit = () => {
         }
         try {
             await postHoax(body)
-
+            setFocused(false);
         }catch (error) {
 
         }
