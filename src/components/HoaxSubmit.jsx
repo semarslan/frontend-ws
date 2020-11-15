@@ -8,13 +8,19 @@ const HoaxSubmit = () => {
     const {image} = useSelector((store) => ({image: store.image}))
     const [focused, setFocused] = useState(false);
     const [hoax, setHoax] = useState('')
+    const [errors, setErrors] = useState({});
     const {t} = useTranslation();
 
     useEffect(() => {
         if (!focused) {
-            setHoax('')
+            setHoax('');
+            setErrors({});
         }
-    }, [focused])
+    }, [focused]);
+
+    useEffect(() => {
+        setErrors({})
+    }, [hoax]);
 
     const onClickHoaxify = async () => {
         const body = {
@@ -23,16 +29,22 @@ const HoaxSubmit = () => {
         try {
             await postHoax(body)
             setFocused(false);
-        }catch (error) {
-
+        } catch (error) {
+            if (error.response.data.validationErrors) {
+                setErrors(error.response.data.validationErrors)
+            }
         }
+    }
+    let textAreaClass = 'form-control';
+    if(errors.content) {
+        textAreaClass += ' is-invalid';
     }
     return (
         <div className="card p-1 flex-row">
             <ProfilePicture image={image} width={30} height={30} className="rounded-circle m-2"/>
             <div className="flex-fill">
                 <textarea
-                    className="form-control"
+                    className={textAreaClass}
                     rows={focused ? '3' : '1'}
                     onFocus={() => setFocused(true)}
                     onChange={(event) => {
@@ -40,6 +52,9 @@ const HoaxSubmit = () => {
                     }}
                     value={hoax}
                 />
+                <div className="invalid-feedback">
+                    {errors.content}
+                </div>
                 {focused &&
                 <div className="text-right m-2">
                     <button className="btn btn-primary" onClick={onClickHoaxify}>Hoaxify</button>

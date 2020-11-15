@@ -20,7 +20,7 @@ const Input = (props) => {
                    defaultValue={defaultValue}
             />
             <div className="invalid-feedback">
-                {error}
+                {props.error}
             </div>
         </div>
     );
