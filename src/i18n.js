@@ -27,7 +27,9 @@ i18n.use(initReactI18next).init({
                 Cancel: "Cancel",
                 'Change Display Name' : "Change Display Name",
                 'My Profile': 'My Profile',
-                Hoaxify: 'Hoax'
+                Hoaxify: 'Hoax',
+                "There are no hoaxes" : "There are no hoaxes"
+
             }
         },
         tr: {
@@ -53,7 +55,8 @@ i18n.use(initReactI18next).init({
                 Cancel: "Vazgeç",
                 'Change Display Name' : "Tercih Edilen İsmi Değiştir",
                 'My Profile' : 'Hesabım',
-                Hoaxify: 'Hoax'
+                Hoaxify: 'Hoax',
+                "There are no hoaxes" : "Hoax bulunamadı."
             }
         }
     },
