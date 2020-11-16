@@ -3,12 +3,16 @@ import {useSelector} from "react-redux";
 import ProfilePicture from "./ProfilePicture";
 import {useTranslation} from "react-i18next";
 import {postHoax} from "../api/apiCalls";
+import {useApiProgress} from "../shared/ApiProgress";
+import ButtonWithProgress from "./ButtonWithProgress";
 
 const HoaxSubmit = () => {
     const {image} = useSelector((store) => ({image: store.image}))
     const [focused, setFocused] = useState(false);
     const [hoax, setHoax] = useState('')
     const [errors, setErrors] = useState({});
+    const pendingApiCall = useApiProgress('post', '/api/1.0/hoaxes');
+    const buttonEnabled = hoax;
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -22,7 +26,8 @@ const HoaxSubmit = () => {
         setErrors({})
     }, [hoax]);
 
-    const onClickHoaxify = async () => {
+    const onClickHoaxify = async event => {
+        event.preventDefault();
         const body = {
             content: hoax
         }
@@ -57,10 +62,19 @@ const HoaxSubmit = () => {
                 </div>
                 {focused &&
                 <div className="text-right m-2">
-                    <button className="btn btn-primary" onClick={onClickHoaxify}>Hoaxify</button>
+                    {/*<button className="btn btn-primary" onClick={onClickHoaxify}>Hoaxify</button>*/}
+                    <div className="d-inline-flex">
+                        <ButtonWithProgress
+                            onClick={onClickHoaxify}
+                            disabled={!buttonEnabled || pendingApiCall}
+                            pendingApiCall={pendingApiCall}
+                            text={t('Hoaxify')}
+                        />
+                    </div>
                     <button
                         className="btn btn-light d-inline-flex m-2"
                         onClick={() => setFocused(false)}
+                        disabled={!buttonEnabled || pendingApiCall}
                     >
                         <span className="material-icons">close</span>
                         {t("Cancel")}

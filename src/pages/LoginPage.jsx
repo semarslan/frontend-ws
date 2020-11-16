@@ -49,7 +49,12 @@ const LoginPage = props => {
                 <Input label={t('Password')} type="password" onChange={event => setPassword(event.target.value)} />
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="text-center">
-                    <ButtonWithProgress onClick={onClickLogin} disabled={!buttonEnabled || pendingApiCall} pendingApiCall={pendingApiCall} text={t('Login')} />
+                    <ButtonWithProgress
+                        onClick={onClickLogin}
+                        disabled={!buttonEnabled || pendingApiCall}
+                        pendingApiCall={pendingApiCall}
+                        text={t('Login')}
+                    />
                 </div>
             </form>
         </div>
