@@ -21,7 +21,9 @@ const HoaxFeed = () => {
         lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
     }
 
-    const loadOldHoaxesProgress = useApiProgress('get', '/api/1.0/hoaxes/' + lastHoaxId , true);
+    const oldHoaxPath = username ? `/api/1.0/users/${username}/hoaxes/${lastHoaxId}` : `/api/1.0/hoaxes/${lastHoaxId}`
+
+    const loadOldHoaxesProgress = useApiProgress('get', oldHoaxPath , true);
 
     useEffect(() => {
         const loadHoaxes = async (page) => {
@@ -38,8 +40,7 @@ const HoaxFeed = () => {
     }, [username]);
 
     const loadOldHoaxes = async () => {
-
-        const response = await getOldHoaxes(lastHoaxId)
+        const response = await getOldHoaxes(lastHoaxId, username)
         setHoaxPage(previousHoaxPage => ({
             ...response.data,
             content: [...previousHoaxPage.content, ...response.data.content]
