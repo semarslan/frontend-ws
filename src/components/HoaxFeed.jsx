@@ -13,8 +13,15 @@ const HoaxFeed = () => {
 
     const path = username ? `/api/1.0/users/${username}/hoaxes?page=` : '/api/1.0/hoaxes?page='
 
-    const pendingApiCall = useApiProgress('get', path);
+    const initialHoaxLoadProgress = useApiProgress('get', path);
 
+    let lastHoaxId = 0;
+    if(hoaxPage.content.length >0) {
+        const lastHoaxIndex = hoaxPage.content.length -1;
+        lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
+    }
+
+    const loadOldHoaxesProgress = useApiProgress('get', '/api/1.0/hoaxes/' + lastHoaxId , true);
 
     useEffect(() => {
         const loadHoaxes = async (page) => {
@@ -31,8 +38,7 @@ const HoaxFeed = () => {
     }, [username]);
 
     const loadOldHoaxes = async () => {
-        const lastHoaxIndex = hoaxPage.content.length -1;
-        const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
+
         const response = await getOldHoaxes(lastHoaxId)
         setHoaxPage(previousHoaxPage => ({
             ...response.data,
@@ -41,7 +47,7 @@ const HoaxFeed = () => {
     }
     const {content, last} = hoaxPage;
     if (hoaxPage.content.length === 0 ) {
-        return <div className="alert alert-secondary text-center">{pendingApiCall ? <Spinner/> : t('There are no hoaxes')}</div>
+        return <div className="alert alert-secondary text-center">{initialHoaxLoadProgress ? <Spinner/> : t('There are no hoaxes')}</div>
     }
     return (
         <div>
@@ -51,9 +57,9 @@ const HoaxFeed = () => {
             {!last &&
             <div
                 className="alert alert-secondary text-center"
-                style={{cursor: pendingApiCall ? 'not-allowed' : 'pointer'}}
-                onClick={pendingApiCall ? () => {} : () => loadOldHoaxes()}>
-                {pendingApiCall ? <Spinner/> : t('...')}
+                style={{cursor: loadOldHoaxesProgress ? 'not-allowed' : 'pointer'}}
+                onClick={loadOldHoaxesProgress ? () => {} : () => loadOldHoaxes()}>
+                {loadOldHoaxesProgress ? <Spinner/> : t('...')}
             </div>}
         </div>
     );
