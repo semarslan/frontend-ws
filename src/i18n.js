@@ -30,7 +30,8 @@ i18n.use(initReactI18next).init({
                 'My Profile': 'My Profile',
                 Hoaxify: 'Hoax',
                 "There are no hoaxes" : "There are no hoaxes",
-                'Load old hoaxes': 'Load old hoaxes'
+                'Load old hoaxes': 'Load old hoaxes',
+                'There are new hoaxes': 'There are new hoaxes'
 
             }
         },
@@ -59,7 +60,8 @@ i18n.use(initReactI18next).init({
                 'My Profile' : 'Hesabım',
                 Hoaxify: 'Hoax',
                 "There are no hoaxes" : "Hoax bulunamadı.",
-                'Load old hoaxes' : 'Geçmiş hoaxları getir'
+                'Load old hoaxes' : 'Geçmiş hoaxları getir',
+                'There are new hoaxes': 'Yeni hoaxlar var'
             }
         }
     },
