@@ -10,14 +10,14 @@ const TopBar = (props) => {
 
     const {t} = useTranslation();
 
-    const {username, isLoggedIn, displayName, image} = useSelector((store) => ({
+    const {username, isLoggedIn, displayName, image} = useSelector(store => ({
         isLoggedIn: store.isLoggedIn,
         username: store.username,
         displayName: store.displayName,
         image: store.image
     }));
 
-    const menuArea = useRef();
+    const menuArea = useRef(null);
     const [menuVisible, setMenuVisible] = useState(false);
 
     useEffect(() => {
@@ -27,12 +27,11 @@ const TopBar = (props) => {
         };
     }, [isLoggedIn]);
 
-    const menuClickTracker = (event) => {
-        if(menuArea.current === null || !menuArea.current.contains(event.target)) {
+    const menuClickTracker = event => {
+        if (menuArea.current === null || !menuArea.current.contains(event.target)) {
             setMenuVisible(false);
         }
-    }
-
+    };
     const dispatch = useDispatch();
 
     const onLogoutSuccess = () => {
@@ -58,41 +57,42 @@ const TopBar = (props) => {
         if (menuVisible) {
             dropDownClass += ' show';
         }
+
         links = (
             <ul className="navbar-nav ml-auto" ref={menuArea}>
                 <li className="nav-item dropdown">
-                    <div className="d-flex" style={{cursor: 'pointer'}} onClick={() => setMenuVisible(true)}>
-                        <ProfilePicture image={image} width={32} height={32} className="rounded-circle m-auto"/>
+                    <div className="d-flex" style={{ cursor: 'pointer' }} onClick={() => setMenuVisible(true)}>
+                        <ProfilePicture image={image} width="32" height="32" className="rounded-circle m-auto" />
                         <span className="nav-link dropdown-toggle">{displayName}</span>
                     </div>
                     <div className={dropDownClass}>
-                        <Link className="dropdown-item d-flex p-3" to={`/user/${username}`} onClick={() => setMenuVisible(false)}>
-                            <span className="material-icons text-info mr-2">person</span>
+                        <Link className="dropdown-item d-flex p-2" to={`/user/${username}`} onClick={() => setMenuVisible(false)}>
+                            <i className="material-icons text-info mr-2">person</i>
                             {t('My Profile')}
                         </Link>
-                        <span className="dropdown-item d-flex p-3" onClick={onLogoutSuccess} style={{cursor: 'pointer'}}>
-                            <span className="material-icons text-danger mr-2">power_settings_new</span>
+                        <span className="dropdown-item  d-flex p-2" onClick={onLogoutSuccess} style={{ cursor: 'pointer' }}>
+              <i className="material-icons text-danger mr-2">power_settings_new</i>
                             {t('Logout')}
-                        </span>
+            </span>
                     </div>
                 </li>
-
-
             </ul>
-        )
+        );
     }
+
     return (
-        <div className="shadow-sm bg-light mb-3">
+        <div className="shadow-sm bg-light mb-2">
             <nav className="navbar navbar-light container navbar-expand">
                 <Link className="navbar-brand" to="/">
-                    <img src={logo} width={60} alt="Hoaxify Logo"/>
+                    <img src={logo} width="60" alt="Hoaxify Logo" />
                     Hoaxify
                 </Link>
                 {links}
             </nav>
         </div>
     );
-}
+};
 
 export default TopBar;
+
 
