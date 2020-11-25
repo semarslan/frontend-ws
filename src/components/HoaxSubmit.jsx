@@ -5,11 +5,13 @@ import {useTranslation} from "react-i18next";
 import {postHoax} from "../api/apiCalls";
 import {useApiProgress} from "../shared/ApiProgress";
 import ButtonWithProgress from "./ButtonWithProgress";
+import Input from "./Input";
 
 const HoaxSubmit = () => {
     const {image} = useSelector((store) => ({image: store.image}))
     const [focused, setFocused] = useState(false);
-    const [hoax, setHoax] = useState('')
+    const [hoax, setHoax] = useState('');
+    const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
     const pendingApiCall = useApiProgress('post', '/api/1.0/hoaxes');
     const buttonEnabled = hoax;
@@ -19,6 +21,7 @@ const HoaxSubmit = () => {
         if (!focused) {
             setHoax('');
             setErrors({});
+            setNewImage();
         }
     }, [focused]);
 
@@ -39,9 +42,20 @@ const HoaxSubmit = () => {
                 setErrors(error.response.data.validationErrors)
             }
         }
+    };
+    const onChangeFile = (event) => {
+        if (event.target.files.length < 1) {
+            return;
+        }
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setNewImage(fileReader.result);
+        }
+        fileReader.readAsDataURL(file);
     }
     let textAreaClass = 'form-control';
-    if(errors.content) {
+    if (errors.content) {
         textAreaClass += ' is-invalid';
     }
     return (
@@ -60,27 +74,30 @@ const HoaxSubmit = () => {
                 <div className="invalid-feedback">
                     {errors.content}
                 </div>
-                {focused &&
-                <div className="text-right m-2">
-                    {/*<button className="btn btn-primary" onClick={onClickHoaxify}>Hoaxify</button>*/}
-                    <div className="d-inline-flex">
-                        <ButtonWithProgress
-                            onClick={onClickHoaxify}
-                            disabled={!buttonEnabled || pendingApiCall}
-                            pendingApiCall={pendingApiCall}
-                            text={t('Hoaxify')}
-                        />
-                    </div>
-                    <button
-                        className="btn btn-light d-inline-flex m-2"
-                        onClick={() => setFocused(false)}
-                        disabled={!buttonEnabled || pendingApiCall}
-                    >
-                        <span className="material-icons">close</span>
-                        {t("Cancel")}
-                    </button>
-                </div>
-                }
+                {focused && (
+                    <>
+                        <Input type="file" onChange={onChangeFile}/>
+                        {newImage && <img src={newImage} alt="hoax-attachment" className="img-thumbnail"/>}
+                        <div className="text-right m-2">
+                            <div className="d-inline-flex">
+                                <ButtonWithProgress
+                                    onClick={onClickHoaxify}
+                                    disabled={!buttonEnabled || pendingApiCall}
+                                    pendingApiCall={pendingApiCall}
+                                    text={t('Hoaxify')}
+                                />
+                            </div>
+                            <button
+                                className="btn btn-light d-inline-flex m-2"
+                                onClick={() => setFocused(false)}
+                                disabled={!buttonEnabled || pendingApiCall}
+                            >
+                                <i className="material-icons">close</i>
+                                {t("Cancel")}
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
 
         </div>
