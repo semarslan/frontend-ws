@@ -31,8 +31,9 @@ i18n.use(initReactI18next).init({
                 Hoaxify: 'Hoax',
                 "There are no hoaxes" : "There are no hoaxes",
                 'Load old hoaxes': 'Load old hoaxes',
-                'There are new hoaxes': 'There are new hoaxes'
-
+                'There are new hoaxes': 'There are new hoaxes',
+                'Delete Hoax' : 'Delete Hoax',
+                'Are you sure to delete hoax?': 'Are you sure to delete hoax?'
             }
         },
         tr: {
@@ -61,7 +62,9 @@ i18n.use(initReactI18next).init({
                 Hoaxify: 'Hoax',
                 "There are no hoaxes" : "Hoax bulunamadı.",
                 'Load old hoaxes' : 'Geçmiş hoaxları getir',
-                'There are new hoaxes': 'Yeni hoaxlar var'
+                'There are new hoaxes': 'Yeni hoaxlar var',
+                'Delete Hoax' : `Hoax'u sil`,
+                'Are you sure to delete hoax?' : `Hoax'u silmek istediğinizden emin misiniz?`,
             }
         }
     },
