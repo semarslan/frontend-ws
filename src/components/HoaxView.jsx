@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 
 const HoaxView = (props) => {
     const {hoax} = props;
-    const {user, content, date} = hoax;
+    const {user, content, date, fileAttachmentVM} = hoax;
     const {username, displayName, image} = user;
 
     const {i18n} = useTranslation();
@@ -27,6 +27,11 @@ const HoaxView = (props) => {
             <div className="pl-5">
                 {content}
             </div>
+            {fileAttachmentVM && (
+                <div className="pl-5">
+                    <img className="img-fluid" src={'images/' + fileAttachmentVM.name} alt={content}/>
+                </div>
+            )}
         </div>
     );
 };
