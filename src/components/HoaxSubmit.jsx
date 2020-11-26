@@ -15,7 +15,6 @@ const HoaxSubmit = () => {
     const [newImage, setNewImage] = useState();
     const [errors, setErrors] = useState({});
     const [attachmentId, setAttachmentId] = useState();
-    const buttonEnabled = hoax;
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -23,6 +22,7 @@ const HoaxSubmit = () => {
             setHoax('');
             setErrors({});
             setNewImage();
+            setAttachmentId();
         }
     }, [focused]);
 
