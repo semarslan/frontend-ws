@@ -78,6 +78,20 @@ const HoaxFeed = () => {
         }));
         setNewHoaxCount(0);
     }
+
+    const onDeleteHoaxSuccess = (id) => {
+        //state'i günceller.
+        setHoaxPage(previousHoaxPage => ({
+            ...previousHoaxPage,
+            // parametredeki id'nin olmadığı bir liste haline getiriyoruz. filtreliyoruz
+            content: previousHoaxPage.content.filter((hoax) => {
+                if (hoax.id !== id ) {
+                    return true;
+                }
+                return false;
+            })
+        }));
+    }
     const {content, last} = hoaxPage;
     if (hoaxPage.content.length === 0) {
         return <div className="alert alert-secondary text-center">
@@ -96,7 +110,7 @@ const HoaxFeed = () => {
                 </div>
             )}
             {content.map(hoax => {
-                return <HoaxView key={hoax.id} hoax={hoax}/>
+                return <HoaxView key={hoax.id} hoax={hoax} onDeleteHoax={onDeleteHoaxSuccess}/>
             })}
             {!last &&
             <div
