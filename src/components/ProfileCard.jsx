@@ -4,10 +4,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import ProfilePicture from "./ProfilePicture";
 import {useTranslation} from "react-i18next";
 import Input from "./Input";
-import {updateUser} from "../api/apiCalls";
+import {deleteUser, updateUser} from "../api/apiCalls";
 import {useApiProgress} from "../shared/ApiProgress";
 import ButtonWithProgress from "./ButtonWithProgress";
 import {updateSuccess} from "../redux/authActions";
+import Modal from "./Modal";
 
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
@@ -19,6 +20,9 @@ const ProfileCard = props => {
     const [newImage, setNewImage] = useState();
     const [validationErrors, setValidationErrors] = useState({});
     const dispatch = useDispatch();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const {userDelete, onDeleteUser} = props;
 
     const [editable, setEditable] = useState(false);
     useEffect(() => {
@@ -85,9 +89,22 @@ const ProfileCard = props => {
         }
         fileReader.readAsDataURL(file);
     }
-    const pendingApiCall = useApiProgress('put', '/api/1.0/users' + username);
+
+    const onClickDelete = async () => {
+        await deleteUser(username);
+        onDeleteUser(username);
+    };
+
+    const onClickCancel = () => {
+        setModalVisible(false);
+    }
+
+    const pendingApiCallForUpdate = useApiProgress('put', `/api/1.0/users/${username}`, true);
+    const pendingApiCallForDelete = useApiProgress('delete', `/api/1.0/users/${username}`, true);
     const {displayName: displayNameError, image: imageError} = validationErrors;
     const {t} = useTranslation();
+
+    const ownedByLoggedInUser = loggedInUsername === username;
     return (
         <div className="card text-center">
             <div className="card-header">
@@ -106,10 +123,20 @@ const ProfileCard = props => {
                             {displayName}@{username}
                         </h3>
                         {editable && (
-                            <button className="btn btn-success d-inline-flex" onClick={() => setInEditMode(true)}>
-                                <span className="material-icons">edit</span>
-                                {t('Edit')}
-                            </button>
+                            <>
+                                <button className="btn btn-success d-inline-flex" onClick={() => setInEditMode(true)}>
+                                    <span className="material-icons">edit</span>
+                                    {t('Edit')}
+                                </button>
+                                <div className="pt-2">
+                                    {ownedByLoggedInUser && (
+                                        <button className="btn btn-danger d-inline-flex"
+                                                onClick={() => setModalVisible(true)}>
+                                            <span
+                                                className="material-icons">directions_run</span> {t('Delete my account')}
+                                        </button>)}
+                                </div>
+                            </>
                         )}
                     </>
                 )}
@@ -127,8 +154,8 @@ const ProfileCard = props => {
                             <ButtonWithProgress
                                 className="btn btn-outline-info d-inline-flex m-2"
                                 onClick={onClickSave}
-                                disabled={pendingApiCall}
-                                pendingApiCall={pendingApiCall}
+                                disabled={pendingApiCallForUpdate}
+                                pendingApiCall={pendingApiCallForUpdate}
                                 text={
                                     <>
                                         <span className="material-icons">save</span>
@@ -139,7 +166,7 @@ const ProfileCard = props => {
                             <button
                                 className="btn btn-light d-inline-flex m-2"
                                 onClick={() => setInEditMode(false)}
-                                disabled={pendingApiCall}
+                                disabled={pendingApiCallForUpdate}
                             >
                                 <span className="material-icons">close</span>
                                 {t("Cancel")}
@@ -148,6 +175,19 @@ const ProfileCard = props => {
                     </div>
                 )}
             </div>
+            <Modal
+                title={t('Delete my account')}
+                visible={modalVisible}
+                onClickCancel={onClickCancel}
+                onClickOk={onClickDelete}
+                buttonMessage={t('Delete my account')}
+                message={
+                    <div>
+                        <div><strong>{t('Are you sure to delete your account?')}</strong></div>
+                    </div>
+                }
+                pendingApiCall={pendingApiCallForDelete}
+            />
         </div>
     );
 };
