@@ -5,7 +5,7 @@ export const signup = body => {
 };
 
 export const login = creds => {
-    return axios.post('/api/1.0/auth', {}, {auth: creds});
+    return axios.post('/api/1.0/auth', creds);
 };
 export const logout = () => {
     return axios.post('/api/1.0/logout');
@@ -24,9 +24,9 @@ Login olan kullanıcıyı listeden kaldırmak.
 Else ise logot olup sayfaya girildiğinde tekrar o kullancıyı listeye eklemek
 */
 
-export const setAuthorizationHeader = ({username, password, isLoggedIn}) => {
+export const setAuthorizationHeader = ({isLoggedIn, token}) => {
     if (isLoggedIn) {
-        const authorizationHeaderValue = `Basic ${btoa(username + ':' + password)}`
+        const authorizationHeaderValue = `Bearer ${token}`
         axios.defaults.headers['Authorization'] = authorizationHeaderValue;
     } else {
         delete axios.defaults.headers['Authorization'];
