@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import ProfilePicture from "./ProfilePicture";
 import {useTranslation} from "react-i18next";
@@ -7,7 +7,7 @@ import Input from "./Input";
 import {deleteUser, updateUser} from "../api/apiCalls";
 import {useApiProgress} from "../shared/ApiProgress";
 import ButtonWithProgress from "./ButtonWithProgress";
-import {updateSuccess} from "../redux/authActions";
+import {logoutSuccess, updateSuccess} from "../redux/authActions";
 import Modal from "./Modal";
 
 const ProfileCard = props => {
@@ -21,6 +21,8 @@ const ProfileCard = props => {
     const [validationErrors, setValidationErrors] = useState({});
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
+    //ana sayfaya yönlendirmek içinn useHistory hooksunu kullandık.
+    const history = useHistory();
 
     const {userDelete, onDeleteUser} = props;
 
@@ -92,7 +94,12 @@ const ProfileCard = props => {
 
     const onClickDelete = async () => {
         await deleteUser(username);
-        onDeleteUser(username);
+        // onDeleteUser(username);
+        setModalVisible(false);
+        //kullanıcı silindikten sonra logout olacak.
+        dispatch(logoutSuccess());
+        history.push('/');
+
     };
 
     const onClickCancel = () => {
