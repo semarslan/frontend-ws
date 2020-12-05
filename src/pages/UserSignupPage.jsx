@@ -19,7 +19,9 @@ const UserSignupPage = (props) => {
     const dispatch = useDispatch();
     const onChange = (event) => {
         const {name, value} = event.target;
-        setErrors((previousErrors) => ({...previousErrors, [name]: undefined}));
+        //setErrors((previousErrors) => ({...previousErrors, [name]: undefined}));
+        errors[name] = undefined;
+        setErrors(errors);
         setForm( (previousForm) =>  ({... previousForm,[name]: value}));
     }
 
@@ -48,8 +50,8 @@ const UserSignupPage = (props) => {
     const {t} = useTranslation();
 
     const {username: usernameError, displayName: displayNameError, password: passwordError} = errors;
-    const pendingApiCallSignup = useApiProgress('/api/1.0/users');
-    const pendingApiCallLogin = useApiProgress('/api/1.0/auth');
+    const pendingApiCallSignup = useApiProgress('post','/api/1.0/users');
+    const pendingApiCallLogin = useApiProgress('post', '/api/1.0/auth');
 
     const pendingApiCall = pendingApiCallSignup || pendingApiCallLogin;
 

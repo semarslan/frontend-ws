@@ -1,14 +1,20 @@
 import {useEffect, useState} from 'react'
 import axios from "axios";
 
-export const useApiProgress = (apiPath) => {
+export const useApiProgress = (apiMethod, apiPath, strictPath) => {
     const [pendingApiCall, setPendingApiCall] = useState(false);
 
     useEffect(() => {
         let requestInterceptor, responseInterceptor
 
-        const updateApiCallFor = (url, inProgress) => {
-            if (url.startsWith(apiPath)) {
+        const updateApiCallFor = (method, url, inProgress) => {
+            if (method !== apiMethod) {
+                return ;
+            }
+            if (strictPath && url === apiPath) {
+                setPendingApiCall(inProgress);
+            }
+            else if (!strictPath && url.startsWith(apiPath)) {
                 setPendingApiCall(inProgress);
             }
         };
@@ -16,29 +22,20 @@ export const useApiProgress = (apiPath) => {
             //burası componentin ilk ekrana konulduğu yerde çağırılan fonksiyon
             requestInterceptor = axios.interceptors.request.use(
                 request => {
-                    // if (request.url === this.props.path) {
-                    //     this.setState({ pendingApiCall: true })
-                    // }
-                    updateApiCallFor(request.url, true);
+                    const {url, method} = request;
+                    updateApiCallFor(method, url, true);
                     return request;
                 });
 
             responseInterceptor = axios.interceptors.response.use(
                 response => {
-                    //     if (response.config.url === this.props.path) {
-                    //         this.setState({ pendingApiCall: false });
-
-                    //     }
-
-                    updateApiCallFor(response.config.url, false)
+                    const {url, method} = response.config;
+                    updateApiCallFor(method, url, false)
                     return response;
                 },
                 error => {
-                    // if (error.config.url === this.props.path) {
-                    //     this.setState({ pendingApiCall: false });
-
-                    // }
-                    updateApiCallFor(error.config.url, false)
+                    const {method, url} = error.config;
+                    updateApiCallFor(method, url, false)
                     throw error;
                 });
         };
@@ -52,8 +49,8 @@ export const useApiProgress = (apiPath) => {
 
         return function unmount() {
             unregisterInterceptors();
-        }
-    }, []);
+        };
+    }, [apiPath, apiMethod, strictPath]);
     return pendingApiCall;
 }
 
