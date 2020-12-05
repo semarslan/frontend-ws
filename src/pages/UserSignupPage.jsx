@@ -19,7 +19,9 @@ const UserSignupPage = (props) => {
     const dispatch = useDispatch();
     const onChange = (event) => {
         const {name, value} = event.target;
-        setErrors((previousErrors) => ({...previousErrors, [name]: undefined}));
+        //setErrors((previousErrors) => ({...previousErrors, [name]: undefined}));
+        errors[name] = undefined;
+        setErrors(errors);
         setForm( (previousForm) =>  ({... previousForm,[name]: value}));
     }
 
